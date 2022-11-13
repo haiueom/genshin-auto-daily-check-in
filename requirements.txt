@@ -2,3 +2,4 @@
 schedule
 genshin
 rich
+python-dotenv
