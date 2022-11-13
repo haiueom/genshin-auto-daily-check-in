@@ -14,7 +14,7 @@ from rich.table import Table
 console = Console()
 
 
-def check_server(server: str) -> str:
+def check_language(language: str) -> str:
     valid = {
         "zh-cn",
         "zh-tw",
@@ -31,17 +31,13 @@ def check_server(server: str) -> str:
         "vi-vn",
     }
 
-    server = server.lower()
-    if server not in valid:
+    language = language.lower()
+    if language not in valid:
         console.log(
-            f"' { server } ': not a valid server."
-            "'zh-cn', 'zh-tw', 'de-de', 'en-us', 'es-es', "
-            "'fr-fr', 'id-id', 'ja-jp', 'ko-kr', 'pt-pt', "
-            "must be one of 'ru-ru', 'th-th', or 'vi-vn'."
-            "Use 'en-us'."
+            f"'{ language }': not a valid language. Using default language -> 'en-us'."
         )
-        server = "en-us"
-    return server
+        language = "en-us"
+    return language
 
 
 def censor_uid(uid: int) -> str:
@@ -62,7 +58,7 @@ async def get_daily_reward(
         level="❓",
         name="❓",
         server="❓",
-        status="❌ failed",
+        status="❌ Failed",
         check_in_count="❓",
         reward="❓",
     )
@@ -74,9 +70,9 @@ async def get_daily_reward(
             f"{env_name}: Invalid cookie information. Please check ltuid and ltoken.")
         return info
     except genshin.AlreadyClaimed:
-        info["status"] = "🟡 Sudah diklaim"
+        info["status"] = "🟡 Already check in"
     else:
-        info["status"] = "✅ Berhasil diklaim"
+        info["status"] = "✅ Check in success"
 
     accounts = await client.get_game_accounts()
 
@@ -99,11 +95,11 @@ async def get_daily_reward(
 
 
 async def get_all_reward(
-    info: list[tuple[str, str, str]], server: str
+    info: list[tuple[str, str, str]], lang: str
 ) -> tuple[dict[str, str]]:
 
     funcs = (
-        get_daily_reward(ltuid, ltoken, server, env_name)
+        get_daily_reward(ltuid, ltoken, lang, env_name)
         for env_name, ltuid, ltoken in info
     )
 
@@ -120,9 +116,9 @@ def init_table() -> Table:
     table.add_column("Nickname", justify="center")
     table.add_column("Level", justify="center")
     table.add_column("Server", justify="center")
-    table.add_column("Hari Kehadiran", justify="center")
-    table.add_column("Keberhasilan Kehadiran", justify="right")
-    table.add_column("Hadiah Kehadiran", justify="right", style="green")
+    table.add_column("Days of Attendance", justify="center")
+    table.add_column("Attendance Status", justify="right")
+    table.add_column("Attendance Reward", justify="right", style="green")
 
     return table
 
@@ -139,8 +135,7 @@ def get_cookie_info_in_env() -> list[tuple[str, str, str]]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("-o", "--once", action="store_true",
-                        help="Run only once")
+    parser.add_argument("-o", "--once", action="store_true", help="Run only once")
     args = parser.parse_args()
     return args
 
@@ -158,9 +153,9 @@ def solve_asyncio_windows_error() -> None:
 def main() -> None:
     cookies = get_cookie_info_in_env()
 
-    server = os.getenv("SERVER", "en-us")
-    server = check_server(server)
-    results = asyncio.run(get_all_reward(cookies, server))
+    language = os.getenv("LANGUAGE", "en-us")
+    language = check_language(language)
+    results = asyncio.run(get_all_reward(cookies, language))
 
     table = init_table()
 
