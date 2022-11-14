@@ -7,11 +7,11 @@ Claim multiple account's daily reward without having to go to the website one by
 
 ## How to use
 ### 1. Get cookie information
-1. Connect to `hoyolab.com`.
-2. Log in.
-3. F12to open the developer tools.
-4. 애플리케이션(Application)Go to tab, enter 쿠키(Cookies), https://www.hoyolab.comin order.
-5. ltuidCopy and from that tab ltoken.
+1. Go to [hoyolab.com](https://www.hoyolab.com).
+2. Login to your account.
+3. Press `F12` to open Inspect Mode (ie. Developer Tools).
+4. Go to `Application`, `Cookies`, `https://www.hoyolab.com`.
+5. Copy `ltuid` and `ltoken`.
    
 ### 2. Set up the environment
 Create new `.env` file like `.env.example`
@@ -31,3 +31,14 @@ Or if you want to run it only once, you can use this command
 ```bash
 python main.py -o
 ```
+To make it easier running the file, you can use bat file to run this, for example:
+```bat
+@echo off
+echo Claiming daily rewards..
+python main.py
+pause
+```
+
+## Sources
+- https://github.com/Bing-su/genshin-auto-daily-check-in-docker
+- https://github.com/thesadru/genshin.py
