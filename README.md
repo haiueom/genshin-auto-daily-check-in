@@ -35,7 +35,7 @@ To make it easier running the file, you can use bat file to run this, for exampl
 ```bat
 @echo off
 echo Claiming daily rewards..
-python main.py
+python main.py -o
 pause
 ```
 
