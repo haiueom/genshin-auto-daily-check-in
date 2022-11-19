@@ -39,7 +39,7 @@ python main.py -o
 pause
 ```
 
-## Sources
+## Sources & References
 - https://github.com/thesadru/genshin.py
 - https://github.com/Bing-su/genshin-auto-daily-check-in-docker
 - https://github.com/Cedrugs/hoyolab-daily-reward-claimer
