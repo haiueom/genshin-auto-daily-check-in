@@ -135,7 +135,8 @@ def get_cookie_info_in_env() -> list[tuple[str, str, str]]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("-o", "--once", action="store_true", help="Run only once")
+    parser.add_argument("-o", "--once", action="store_true",
+                        help="Run only once")
     args = parser.parse_args()
     return args
 
