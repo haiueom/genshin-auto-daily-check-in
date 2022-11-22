@@ -26,5 +26,6 @@ jobs:
 
             - name: execute py script
               env:
-                  ACCOUNTS1: ${{ secrets.ACCOUNT1 }}
+                  ACCOUNTS1: ${{ secrets.ACCOUNT1 }} # Punyaku
+                  ACCOUNTS2: ${{ secrets.ACCOUNT2 }} # Punya Muad
               run: python main.py -o
