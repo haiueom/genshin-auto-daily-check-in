@@ -1,4 +1,4 @@
 genshin
 rich
 schedule
-request
+requests
