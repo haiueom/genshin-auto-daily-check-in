@@ -32,4 +32,4 @@ jobs:
                   ACCOUNTS1: ${{ secrets.ACCOUNT1 }} # 859
                   ACCOUNTS2: ${{ secrets.ACCOUNT2 }} # Muad
                   ACCOUNTS3: ${{ secrets.ACCOUNT3 }} # albaly
-              run: python main.py -o
+              run: python main.py -o -t

@@ -136,8 +136,8 @@ def get_cookie_info_in_env() -> list[tuple[str, str, str]]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("-o", "--once", action="store_true",
-                        help="Run only once")
+    parser.add_argument("-o", "--once", action="store_true", help="Run only once")
+    parser.add_argument("-t", "--tele", action="store_true", help="Send message to Telegram")
     args = parser.parse_args()
     return args
 
@@ -167,7 +167,10 @@ def main() -> None:
 
     for info in results:
         message = f"UID: {info['uid']}\nNickname: {info['name']}\nLevel: {info['level']}\nServer: {info['server']}\nDay: {info['check_in_count']}\nStatus: {info['status']}\nReward: {info['reward']}\n"
-        send_telegram(message)
+
+        if args.tele:
+            send_telegram(message)
+
         table.add_row(
             info["uid"],
             info["name"],
