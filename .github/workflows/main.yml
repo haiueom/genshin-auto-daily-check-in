@@ -25,6 +25,7 @@ jobs:
                   pip install -r requirements.txt
 
             - name: execute py script
+              id: claim
               env:
                   ACCOUNTS1: ${{ secrets.ACCOUNT1 }} # 859
                   ACCOUNTS2: ${{ secrets.ACCOUNT2 }} # Muad
@@ -33,18 +34,17 @@ jobs:
               
             - name: send telegram message on push
               uses: appleboy/telegram-action@master
+              env:
+                GITHUB_CONTEXT: ${{ toJSON(github) }}
               with:
                 to: ${{ secrets.TELEGRAM_TO }}
                 token: ${{ secrets.TELEGRAM_TOKEN }}
                 disable_web_page_preview: true
+                format: markdown
                 message: |
-                  ${{ github.actor }} trigger action:
-                  Action Message: 
-                  
-                  ${{ github.action }}
-                  
-                  ${{ github.action_status }}
-
-                  Repository: ${{ github.repository }}
-
-                  See logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                  Repository: *[${{ github.repository }}](${{ github.repository }})*
+                  Owner: *[${{ github.repository_owner }}](${{ github.repository_owner }})*
+                  Output:
+                  ```
+                  ${{ steps.claim.outputs }}
+                  ```
