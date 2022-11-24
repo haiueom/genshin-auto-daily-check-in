@@ -30,3 +30,21 @@ jobs:
                   ACCOUNTS2: ${{ secrets.ACCOUNT2 }} # Muad
                   ACCOUNTS3: ${{ secrets.ACCOUNT3 }} # albaly
               run: python main.py -o
+              
+            - name: send telegram message on push
+              uses: appleboy/telegram-action@master
+              with:
+                to: ${{ secrets.TELEGRAM_TO }}
+                token: ${{ secrets.TELEGRAM_TOKEN }}
+                disable_web_page_preview: true
+                message: |
+                  ${{ github.actor }} trigger action:
+                  Action Message: 
+                  
+                  ${{ github.action }}
+                  
+                  ${{ github.action_status }}
+
+                  Repository: ${{ github.repository }}
+
+                  See logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
