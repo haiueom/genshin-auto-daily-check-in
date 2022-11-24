@@ -27,27 +27,9 @@ jobs:
             - name: execute py script
               id: claim
               env:
+                  TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
+                  TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
                   ACCOUNTS1: ${{ secrets.ACCOUNT1 }} # 859
                   ACCOUNTS2: ${{ secrets.ACCOUNT2 }} # Muad
                   ACCOUNTS3: ${{ secrets.ACCOUNT3 }} # albaly
               run: python main.py -o
-              
-            - name: send telegram message on push
-              uses: appleboy/telegram-action@master
-              env:
-                GITHUB_CONTEXT: ${{ toJSON(github) }}
-              with:
-                to: ${{ secrets.TELEGRAM_TO }}
-                token: ${{ secrets.TELEGRAM_TOKEN }}
-                disable_web_page_preview: true
-                message: |
-                  Repository: *${{ github.repository }}*
-                  Owner: *${{ github.repository_owner }}*
-                  Conclusion:
-                  ```
-                  ${{ steps.claim.conclusion }}
-                  ```
-                  Outputs:
-                  ```
-                  ${{ steps.claim.outputs }}
-                  ```

@@ -3,6 +3,7 @@ import asyncio
 import os
 import sys
 import time
+import requests
 from datetime import datetime
 
 import genshin
@@ -116,9 +117,9 @@ def init_table() -> Table:
     table.add_column("Nickname", justify="center")
     table.add_column("Level", justify="center")
     table.add_column("Server", justify="center")
-    table.add_column("Days of Attendance", justify="center")
-    table.add_column("Attendance Status", justify="right")
-    table.add_column("Attendance Reward", justify="right", style="green")
+    table.add_column("Day", justify="center")
+    table.add_column("Status", justify="right")
+    table.add_column("Reward", justify="right", style="green")
 
     return table
 
@@ -150,6 +151,10 @@ def solve_asyncio_windows_error() -> None:
     ):
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
+def send_telegram(message):
+    api_telegram = f"https://api.telegram.org/bot{os.getenv('TELEGRAM_TOKEN')}/sendMessage"
+    requests.get(api_telegram, params={"chat_id": os.getenv('TELEGRAM_TO'), "text": message})
+
 
 def main() -> None:
     cookies = get_cookie_info_in_env()
@@ -161,6 +166,8 @@ def main() -> None:
     table = init_table()
 
     for info in results:
+        message = f"UID: {info['uid']}\nNickname: {info['name']}\nLevel: {info['level']}\nServer: {info['server']}\nDays of Attendance: {info['check_in_count']}\nAttendance Status: {info['status']}\nAttendance Reward: {info['reward']}\n"
+        send_telegram(message)
         table.add_row(
             info["uid"],
             info["name"],
