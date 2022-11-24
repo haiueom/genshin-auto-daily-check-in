@@ -166,7 +166,7 @@ def main() -> None:
     table = init_table()
 
     for info in results:
-        message = f"UID: {info['uid']}\nNickname: {info['name']}\nLevel: {info['level']}\nServer: {info['server']}\nDays of Attendance: {info['check_in_count']}\nAttendance Status: {info['status']}\nAttendance Reward: {info['reward']}\n"
+        message = f"UID: {info['uid']}\nNickname: {info['name']}\nLevel: {info['level']}\nServer: {info['server']}\nDay: {info['check_in_count']}\nStatus: {info['status']}\nReward: {info['reward']}\n"
         send_telegram(message)
         table.add_row(
             info["uid"],
